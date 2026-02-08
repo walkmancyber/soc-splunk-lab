@@ -1,55 +1,30 @@
-# 04 – Splunk Universal Forwarder Installation (Windows Endpoint)
+# Splunk Universal Forwarder Installation (Windows Endpoint)
+---
 
-## Objective
+### Objective
 
 Install and configure Splunk Universal Forwarder on a Windows (VMware) endpoint to securely forward Sysmon telemetry to Splunk Enterprise running inside Docker on the host machine.
 
----
-
-## Environment
-
-- Endpoint OS: Windows 10 (Virtual Machine)
-- Hypervisor: VMware
-- Network Mode: NAT
-- SIEM: Splunk Enterprise (Docker)
-- Host OS: Windows 11
-- Forwarding Port: 9997
-- Index: main
-
----
-
-## Architecture Overview
+### Architecture Overview
 
 The Windows endpoint sends Sysmon events to Splunk Enterprise through the Universal Forwarder.
 
-[ Windows 10 VM ]
-|
-| Sysmon Events
-| (TCP 9997)
-v
-[ Host Windows ]
-|
-| Docker Port Mapping
-v
-[ Splunk Enterprise (Docker) ]
+This lab simulates a real-world SOC detection pipeline with isolated endpoints and centralized log analysis.
 
+![Architecture-Overview](../images/Architecture-Overview.png)
 
 - The endpoint does NOT communicate with Docker directly.
 - Docker exposes port `9997` on the host.
 - The forwarder sends data to the host IP.
 
----
+### Security Considerations
 
-## Security Considerations
+- NAT network prevents direct internet exposure.
+- Port 9997 is only accessible inside the local lab.
+- No deployment server is used.
+- No malware executed at this stage.
 
-- NAT network prevents direct internet exposure
-- Port 9997 is only accessible inside the local lab
-- No deployment server is used
-- No malware executed at this stage
-
----
-
-## Prerequisites
+### Prerequisites
 
 Before installing the forwarder, the following must be completed:
 
@@ -61,7 +36,7 @@ Before installing the forwarder, the following must be completed:
 ---
 ## Sysmon  
 
-## Step A – Download Sysmon
+### Step A – Download Sysmon
 
 On the *Windows VM*:
 
@@ -69,27 +44,48 @@ On the *Windows VM*:
 
 - Extract Sysmon64.exe
 
-## Step B – Download Sysmon Configuration
+![Sysmon-folder](../images/Sysmon-folder.png)
+
+### Step B – Sysmon Configuration
 
 - Create a Sysmon configuration file.
 
 For this lab, a community-based configuration was used as a baseline (SwiftOnSecurity-style).
 Example filename:
 
-	sysmon-config.xml
+	`sysmon-config.xml`
 
-***Place the file in the same directory as Sysmon64.exe
+*Place the file in the same directory as `Sysmon64.exe`*
 
-## Step C – Install Sysmon with XML Configuration
+- Crate a `notepad sysmon-config.xml` and ride:
+
+`
+<Sysmon schemaversion="4.90">
+  <HashAlgorithms>sha256</HashAlgorithms>
+
+  <EventFiltering>
+
+    <ProcessCreate onmatch="include" />
+    <NetworkConnect onmatch="include" />
+    <FileCreate onmatch="include" />
+    <RegistryEvent onmatch="include" />
+
+  </EventFiltering>
+</Sysmon>
+`
+
+![Sysmon-XML-Configuration](../images/Sysmon-XML-Configuration.png)
+
+### Step C – Install Sysmon with XML Configuration
 
 - Open PowerShell as Administrator and navigate to the Sysmon directory.
 - Install Sysmon using the configuration file:
 
-	.\Sysmon64.exe -accepteula -i sysmon-config.xml
+	`.\Sysmon64.exe -accepteula -i sysmon-config.xml`
 
 Expected output indicates successful installation.
 
-## XML Configuration Is Required
+### XML Configuration Is Required
 
 By default, Sysmon does not generate useful telemetry.
 The XML configuration allows:
@@ -107,11 +103,12 @@ The XML configuration allows:
 - Events are generated using benign system activity.
 
 
----
+
 
 ## VMware Windows Splunk Universal Forwarder
+---
 
-## Step 1 – Identify Host IP Address
+### Step 1 – Identify Host IP Address
 
 On the **host Windows machine** (not the VM):
 
@@ -120,7 +117,7 @@ ipconfig
 IPv4 Address: 192.168.xxx.xxx
 This IP will be used as the receiving indexer address.
 
-## Step 2 – Download Splunk Universal Forwarder
+### Step 2 – Download Splunk Universal Forwarder
 
 - On the Windows VM: 
 	- Download Splunk Universal Forwarder
@@ -130,7 +127,7 @@ This IP will be used as the receiving indexer address.
 	- 64-bit
 	- Latest version.
 
-## Step 3 – Install Splunk Universal Forwarder
+### Step 3 – Install Splunk Universal Forwarder
 
 - Run the installer as Administrator.
 
@@ -149,7 +146,7 @@ This IP will be used as the receiving indexer address.
 
 This configures the forwarder to send data directly to Splunk Enterprise.
 
-## Step 4 – Create inputs.conf
+### Step 4 – Create inputs.conf
 
 The forwarder does not collect any data by default. Inputs must be explicitly configured.
 
@@ -166,7 +163,7 @@ The forwarder does not collect any data by default. Inputs must be explicitly co
 
 - Save the file.
 
-## Step 5 – Restart Splunk Forwarder
+### Step 5 – Restart Splunk Forwarder
 
 Restart the forwarder to apply changes.
 
@@ -174,7 +171,7 @@ Restart the forwarder to apply changes.
 
 	.\splunk.exe restart
 
-## Step 6 – Validate Forwarder Status
+### Step 6 – Validate Forwarder Status
 
 - Confirm the service is running: 
 	- Get-Service splunkforwarder
@@ -182,17 +179,17 @@ Restart the forwarder to apply changes.
 - Expected status: 
 	- Status : Running
 
-## Splunk Forwarder and Sysmon running
+#### Splunk Forwarder and Sysmon running
 he screenshot shows Windows PowerShell running as administrator, confirming that the SplunkForwarder and Sysmon64 services are in a Running state. This verifies that both components are properly installed and active on the endpoint.
 
 ![splunk-sysmon-running](../images/splunk-sysmon-running.png)
 
-## Step 7 – Generate Test Events
+### Step 7 – Generate Test Events
 
 Generate safe, controlled activity on the endpoint: 
 	- ping 8.8.8.8
 
-## Step 8 – Verify Data in Splunk
+### Step 8 – Verify Data in Splunk
 
 Access Splunk Web on the host: 
 	- http://localhost:8000
@@ -206,14 +203,14 @@ Run the following search:
 	- Events are being transmitted to Splunk.
 	- Splunk is indexing the data correctly.
 
-## Universal Forwarder connected on port 9997
+#### Universal Forwarder connected on port 9997
 
 The Splunk web interface at http://localhost:8000 is displayed, showing Windows Event Logs being indexed. This confirms that the endpoint is successfully sending events to Splunk.
 
 ![Events-received-in-Splunk](../images/Events-received-in-Splunk.png)
 ---
 
-## Validate Forwarder Connection to Splunk
+### Validate Forwarder Connection to Splunk
 
 To confirm that the Universal Forwarder is successfully sending data to Splunk Enterprise, the forwarder connection status must be verified in the internal logs.
 
@@ -238,13 +235,13 @@ To confirm that the Universal Forwarder is successfully sending data to Splunk E
 - Port 9997 confirms data is being sent to the configured Splunk receiver.
 - The host IP confirms that the forwarder is communicating with the correct destination.
 
-## Universal Forwarder connected on port 9997
+### Universal Forwarder connected on port 9997
 
 The splunkd.log file shows the message “Connected to idx=<IP>:9997”, confirming a successful connection between the Universal Forwarder and the Splunk indexer.
 
 ![forwarder-connected-9997](../images/forwarder-connected-9997.png)
 
-## NOTE
+#### NOTE
 
 If the message is not present, common causes include:
 
