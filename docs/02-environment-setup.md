@@ -1,5 +1,4 @@
 # Splunk Initial Setup & Verification
----
 
 ## Environment
 
@@ -11,7 +10,7 @@
 - Forwarding Port: 9997
 
 ## 1. Splunk Startup Verification
----
+
 Splunk Enterprise was deployed using Docker Compose and its successful startup was verified through the following steps.
 
 - Confirmed running containers using:
@@ -23,7 +22,6 @@ Splunk Enterprise was deployed using Docker Compose and its successful startup w
     `http://localhost:8000`
 
 ## 2. Development Environment Configuration
----
 
 ### 2.1 Visual Studio Code
 
@@ -39,7 +37,6 @@ Docker Desktop was used to confirm that the Splunk container was running correct
 ![docker-desktop-wsl](../images/docker-desktop-wsl.png)
 
 ## 3. Splunk Web Interface Validation
----
 
 The following image shows the Splunk Web interface after a successful login.
 This confirms that Splunk Enterprise is accessible and ready for configuration.
@@ -51,7 +48,6 @@ This confirms that Splunk Enterprise is accessible and ready for configuration.
 ![Splunk-Web-interface](../images/Splunk-Web-interface.png)
 
 ## 4. Windows VM Preparation
----
 
 Windows virtual machine was successfully deployed as part of the lab.
 The following steps were completed:

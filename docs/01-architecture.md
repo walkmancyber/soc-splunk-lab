@@ -1,5 +1,4 @@
 # Security Principles & Lab Isolation Model
----
 
 - The Splunk Enterprise instance runs inside Docker containers with no direct internet exposure.
 
