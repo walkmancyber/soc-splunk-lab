@@ -4,9 +4,9 @@
 
 - Communication between systems is unidirectional:
 
-    - Endpoints → Splunk (log forwarding only)
+  - Endpoints → Splunk (log forwarding only)
 
-    - No command or control traffic originates from Splunk.
+  - No command or control traffic originates from Splunk.
 
 - Log collection is performed using Splunk Universal Forwarder, minimizing attack surface on the endpoint.
 
@@ -18,8 +18,10 @@
 
 - All offensive activity (malware execution, exploitation, adversary simulation) is performed exclusively inside isolated virtual machines.
 
+- No production credentials or personal data are used within the lab environment.
+
 ## Architecture Overview
 
 This lab simulates a real-world SOC detection pipeline with isolated endpoints and centralized log analysis
 
-![SOC-Lab](../images/SOC-Lab.png)
+![SOC-Lab-Architecture-Overview](../images/SOC-Lab-Architecture-Overview.png)
