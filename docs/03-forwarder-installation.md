@@ -82,6 +82,9 @@ Example filename:
 
 *Expected output indicates successful installation.*
 
+
+`.\Sysmon64.exe -c`
+
 ### XML Configuration Is Required
 
 By default, Sysmon does not generate useful telemetry.
@@ -130,6 +133,8 @@ Installation Options:
 
 - Set a `username and password`
 
+![splunk-username-password](../images/splunk-username-password.png)
+
 - Deployment Server (Not used in this lab):
 
   - Leave empty
@@ -159,7 +164,7 @@ The forwarder does not collect any data by default. Inputs must be explicitly co
 [WinEventLog://Microsoft-Windows-Sysmon/Operational]
 disabled = 0
 index = main
-sourcetype = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+renderXml = true
 ```
 
 ![create-inputs](../images/create-inputs.png)
@@ -204,7 +209,7 @@ To confirm that the Universal Forwarder is successfully sending data to Splunk E
 
 - Search for the following message:
 
-`Connecti9onStrategy [8560 TcpOutEloop] - Connected to 192.xxx.xxx.xxx:9997:0, pset=0, reuse=0. autoBatch=1`
+`ConnectionStrategy [8560 TcpOutEloop] - Connected to 192.xxx.xxx.xxx:9997:0, pset=0, reuse=0. autoBatch=1`
 
 *** *(Tip: use `Ctrl + f` to find faster)*.
 
@@ -216,6 +221,21 @@ The splunkd.log file shows the message `Connected to idx=<IP>:9997`, confirming 
 - Connected indicates that the forwarder has successfully established a TCP connection to the Splunk receiving port.
 - Port `9997` confirms data is being sent to the configured Splunk receiver.
 - The `host IP` confirms that the forwarder is communicating with the correct destination.
+
+### Connectivity Verification (Port 9997)
+
+As an additional validation step, to ensure full network connectivity between the Windows VM (Splunk Universal Forwarder) and the Splunk Enterprise instance, the following PowerShell command can be used:
+
+`Test-NetConnection <HOST_WINDOWS_IP> -Port 9997`
+
+A successful result should return:
+
+`TcpTestSucceeded : True`
+
+
+This confirms that the TCP connection to port `9997` is open and that the forwarder can successfully communicate with the Splunk indexer.
+
+![Connectivity-Verification-Port-9997](../images/Connectivity-Verification-Port-9997.png)
 
 ### Step 8 – Generate Test Events
 
@@ -245,6 +265,8 @@ Successful results:
 The Splunk web interface at `http://localhost:8000` is displayed, showing Windows Event Logs being indexed. This confirms that the endpoint is successfully sending events to Splunk.
 
 ![Events-received-in-Splunk](../images/Events-received-in-Splunk.png)
+
+![Events-compare](../images/Events-compare.png)
 
 #### NOTE
 
