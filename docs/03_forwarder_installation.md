@@ -1,6 +1,6 @@
 # Splunk Universal Forwarder Installation (Windows Endpoint)
 
-### Objective
+## Objective
 
 Install and configure Splunk Universal Forwarder on a Windows (VMware) endpoint to securely forward Sysmon telemetry to Splunk Enterprise running in Docker on the host machine.
 
@@ -57,7 +57,7 @@ Example filename:
 
 - Create `sysmon-config.xml` using Notepad and copy the following configuration:
 
-```
+```XML
 <Sysmon schemaversion="4.90">
  <HashAlgorithms>sha256</HashAlgorithms>
  
@@ -160,7 +160,7 @@ The forwarder does not collect any data by default. Inputs must be explicitly co
 
 `notepad inputs.conf`
 
-```
+```conf
 [WinEventLog://Microsoft-Windows-Sysmon/Operational]
 disabled = 0
 index = main
@@ -209,7 +209,7 @@ To confirm that the Universal Forwarder is successfully sending data to Splunk E
 
 - Search for the following message:
 
-`ConnectionStrategy [8560 TcpOutEloop] - Connected to 192.xxx.xxx.xxx:9997:0, pset=0, reuse=0. autoBatch=1`
+ `ConnectionStrategy [8560 TcpOutEloop] - Connected to 192.xxx.xxx.xxx:9997:0, pset=0, reuse=0. autoBatch=1`
 
 *** *(Tip: use `Ctrl + f` to find faster)*.
 
@@ -230,7 +230,6 @@ As an additional validation step to ensure full network connectivity between the
 A successful result should return:
 
 `TcpTestSucceeded : True`
-
 
 This confirms that the TCP connection to port `9997` is open and that the forwarder can successfully communicate with the Splunk indexer.
 

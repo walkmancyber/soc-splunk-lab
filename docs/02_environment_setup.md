@@ -15,11 +15,11 @@ Splunk Enterprise was deployed using Docker Compose, and its successful startup 
 
 - Confirmed running containers using:
 
-    `docker ps`
+`docker ps`
 
 - Accessed the Splunk Web interface at:
 
-    `http://localhost:8000`
+`http://localhost:8000`
 
 ## 2. Development Environment Configuration
 

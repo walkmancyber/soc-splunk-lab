@@ -42,7 +42,7 @@ To explicitly enable Process Creation telemetry, the Sysmon configuration file w
 
 The following rule was added to the XML configuration:
 
-```
+```XML
 <Sysmon schemaversion="4.90">
 
   <HashAlgorithms>sha256</HashAlgorithms>
@@ -109,4 +109,4 @@ While `EventID 1` was not reliably generated in this setup, other Sysmon events 
 
 ![EventID1 no results found](../images/doc05/EventID1-no-results-found.png)
 
-For the purposes of this lab, Sysmon was considered functional, and the investigation was documented to record observed limitations before proceeding with alternative event sources.
+For the purposes of this lab, Sysmon was considered functional, and the investigation was documented to record observed limitations before proceeding with alternative event sources. **Note** I even try *Time range: All time* and nothing.
