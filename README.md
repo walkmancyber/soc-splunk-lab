@@ -38,11 +38,12 @@ sources, data flow, and core components.
 
 | Document | Description |
 |--------|-------------|
-| [**Architecture**](docs/01-architecture.md) | Lab architecture |
-| [**Environment Setup**](docs/02-environment_setup.md) | Splunk deployment and environment preparation |
-| [**Forwarder Installation**](docs/03-forwarder_installation.md) | Sysmon64 and Splunk Universal Forwarder installation and configuration |
-| [**Fix Sysmon Even Colletions Issue**](docs/04-Fix_Sysmon_Event_Collection_Issue.md)| Investigation and resolution of Sysmon ingestion issue |
+| [**Architecture**](docs/01_architecture.md) | Lab architecture |
+| [**Environment Setup**](docs/02_environment_setup.md) | Splunk deployment and environment preparation |
+| [**Forwarder Installation**](docs/03_forwarder_installation.md) | Sysmon64 and Splunk Universal Forwarder installation and configuration |
+| [**Fix Sysmon Even Colletions Issue**](docs/04_fix_sysmon_event_collection_issue.md)| Investigation and resolution of Sysmon ingestion issue |
 | [**Sysmon EventID1 Investigation**](docs/05_sysmon_eventid1_investigation.md)| No EventID=1 |
+| [**Windows Security Log**](docs/06_Windows_Security_Log.md)| Ensure process creation visibility independent of Sysmon. |
 | **Detections** | Basic detections and validation queries **Comming soon** |
 
 ## Current Status
