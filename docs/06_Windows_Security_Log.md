@@ -46,9 +46,13 @@ disabled = 0
 index = main
 ```
 
+![Updating inputs](../images/doc06/configuration-inputs.png)
+
 After modifying the file:
 
 `.\splunk.exe restart`
+
+![Splunk restart](../images/doc06/splunk-restart.png)
 
 Validation in Splunk:
 
@@ -61,6 +65,8 @@ Events were successfully indexed, confirming:
 - Forwarder ingestion working.
 - Security log access permitted.
 - Splunk indexing functioning correctly.
+
+![Validation in Splunk](../images/doc06/Validation-in-Splunk.png)
 
 Learning Outcome
 
@@ -78,6 +84,8 @@ To generate controlled telemetry, several applications were manually executed:
 - `wscript.exe`
 - `winword.exe`
 
+![Generating Process Activity](../images/doc06/Generating-Process-Activity.png)
+
 To view process creation events:
 
 ```spl
@@ -85,6 +93,8 @@ index=main source="WinEventLog:Security" EventCode=4688
 | search "powershell.exe"
 | sort - _time
 ```
+
+![view process creation events](../images/doc06/view-process-creation-events.png)
 
 ### What is `EventCode 4688`?
 
@@ -130,6 +140,8 @@ index=main source="WinEventLog:Security" EventCode=4688
 | sort - _time
 ```
 
+![Parent Process Analysis](../images/doc06/Parent-Process-Analysis.png)
+
 ### SPL Explanation
 
 - `rex` → extracts fields using regex from raw event text.
@@ -163,6 +175,8 @@ index=main source="WinEventLog:Security" EventCode=4688
 
 ```
 
+![Process Mapping](../images/doc06/process-mapping.png)
+
 ### SPL Explanation
 
 - Extracts both:
@@ -176,6 +190,8 @@ This enabled detection of:
 `powershell.exe → auditpol.exe`
 
 Which can indicate audit policy modification activity.
+
+![Event Detection](../images/doc06/Event-Detection.png)
 
 ### Learning Outcome
 
